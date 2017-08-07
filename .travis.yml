@@ -1,17 +1,14 @@
-language: java
-
-env:
-  - ANDROID_HOME=$PWD/android-sdk
-
-# Skip the install step, gradlew assemble will fail due to Crashlytics
-install: true
+language: android
 
 jdk:
   - oraclejdk8
 
-before_install:
-  - rvm install 2.3.4
-  - gem install android-sdk-installer
-  - android-sdk-installer -i
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-26.0.1
+    - android-26
+    - extra-google-m2repository
 
-script: "./gradlew build"
+script: "./gradlew notifire:assemble"
