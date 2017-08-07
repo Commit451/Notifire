@@ -12,6 +12,9 @@ import android.support.v4.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
+/**
+ * Posts the [RemoteMessage] as a system notification.
+ */
 fun RemoteMessage.notify(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int) {
     val notification = this.toNotification(context, defaultTitle, defaultNotificationResource)
     val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -19,6 +22,9 @@ fun RemoteMessage.notify(context: Context, defaultTitle: String, @DrawableRes de
     manager.notify(id, notification)
 }
 
+/**
+ * Transforms the [RemoteMessage] to a [Notification] for you to post yourself or modify as needed
+ */
 fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int): Notification {
     var soundUri: Uri? = null
     if (notification.sound != null) {
