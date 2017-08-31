@@ -66,6 +66,7 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
     }
 
     val builder: Notification.Builder
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         builder = Notification.Builder(context, channelId)
     } else {

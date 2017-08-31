@@ -27,3 +27,9 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    sdkVersion = 26
+    buildToolsVersion = '26.0.1'
+    googleServicesVersion = '11.2.0'
+}
