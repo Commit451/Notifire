@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
@@ -13,7 +14,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.Util
 import java.util.*
 
+
 private const val KEY_NOTIFICATION_CHANNEL = "gcm.notification.android_channel_id"
+private const val KEY_MANIFEST_NOTIFICATION_CHANNEL = "com.google.firebase.messaging.default_notification_channel"
 
 /**
  * Posts the [RemoteMessage] as a system notification.
@@ -53,11 +56,15 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
     }
     val title = notification.title ?: defaultTitle
     val bundle = Util.getBundle(this)
-    //found via experimentation
+    val applicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+    //found default channel id via experimentation
     var channelId = "fcm_fallback_notification_channel"
     if (bundle != null && bundle.containsKey(KEY_NOTIFICATION_CHANNEL)) {
         channelId = bundle.getString(KEY_NOTIFICATION_CHANNEL)
+    } else if (applicationInfo.metaData.containsKey(KEY_MANIFEST_NOTIFICATION_CHANNEL)) {
+        channelId = applicationInfo.metaData.getString(KEY_MANIFEST_NOTIFICATION_CHANNEL)
     }
+
     val builder: Notification.Builder
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         builder = Notification.Builder(context, channelId)
