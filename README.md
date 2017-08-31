@@ -27,6 +27,7 @@ See [the docs](https://firebase.google.com/docs/cloud-messaging/http-server-ref)
 - sound
 - tag
 - color
+- android_channel_id
 
 Please open issues if you need more things to be supported.
 
