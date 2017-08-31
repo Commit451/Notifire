@@ -3,6 +3,7 @@ package com.commit451.notifire.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import com.google.firebase.iid.FirebaseInstanceId
 
@@ -12,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val textPayload = findViewById(R.id.text_payload) as TextView
-        val buttonPrint = findViewById(R.id.button_print)
+        val textPayload = findViewById<TextView>(R.id.text_payload)
+        val buttonPrint = findViewById<View>(R.id.button_print)
         buttonPrint.setOnClickListener {
             Log.d("notifire", "Token: ${FirebaseInstanceId.getInstance().token}")
         }

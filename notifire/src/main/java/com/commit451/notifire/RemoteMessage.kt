@@ -7,10 +7,13 @@ import android.content.Context
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.support.annotation.DrawableRes
-import android.support.v4.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.Util
 import java.util.*
+
+private const val KEY_NOTIFICATION_CHANNEL = "gcm.notification.android_channel_id"
 
 /**
  * Posts the [RemoteMessage] as a system notification.
@@ -49,7 +52,19 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
         color = Color.parseColor(notification.color)
     }
     val title = notification.title ?: defaultTitle
-    val builder = NotificationCompat.Builder(context)
+    val bundle = Util.getBundle(this)
+    //found via experimentation
+    var channelId = "fcm_fallback_notification_channel"
+    if (bundle != null && bundle.containsKey(KEY_NOTIFICATION_CHANNEL)) {
+        channelId = bundle.getString(KEY_NOTIFICATION_CHANNEL)
+    }
+    val builder: Notification.Builder
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        builder = Notification.Builder(context, channelId)
+    } else {
+        builder = Notification.Builder(context)
+    }
+    builder
             .setContentTitle(title)
             .setContentText(notification.body)
             .setAutoCancel(true)
@@ -61,7 +76,7 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
     if (soundUri != null) {
         builder.setSound(soundUri)
     }
-    if (color != null) {
+    if (color != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         builder.setColor(color)
     }
 
