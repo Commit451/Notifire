@@ -1,3 +1,4 @@
+@file:JvmName("Notifire")
 package com.commit451.notifire
 
 import android.app.Notification
