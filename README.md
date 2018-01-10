@@ -10,14 +10,18 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-
-        if (remoteMessage != null) {
-            //posts the notification right away with the configuration from Firebase
-            remoteMessage.notify(applicationContext, getString(R.string.app_name), R.mipmap.ic_launcher)
-        }
+        //posts the notification right away with the configuration from Firebase
+        remoteMessage?.notify(applicationContext, getString(R.string.app_name), R.mipmap.ic_launcher)
     }
 }
 ```
+You also need to set up a default notification channel for Firebase to use when pushing in your manifest, like so:
+```xml
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_channel_id"
+    android:value="@string/default_notification_channel_id"/>
+```
+Make sure you actually create this channel in your application `onCreate`
 
 ## Supported
 See [the docs](https://firebase.google.com/docs/cloud-messaging/http-server-ref) for how to configure a notification payload
@@ -28,8 +32,6 @@ See [the docs](https://firebase.google.com/docs/cloud-messaging/http-server-ref)
 - tag
 - color
 - android_channel_id
-
-Please open issues if you need more things to be supported.
 
 ## Limitations
 - If you set an invalid sound on your notification payload, in the background, Firebase will play the default sound if the raw resource is not found, but when the message is posted in the foreground with Notifire, it will play no sound if the raw resource is not found. This is an uncommon case since you should only send valid resource names in the payload, but something worth noting.

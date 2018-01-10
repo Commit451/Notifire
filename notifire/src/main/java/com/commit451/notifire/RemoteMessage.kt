@@ -25,7 +25,7 @@ private const val KEY_MANIFEST_NOTIFICATION_CHANNEL = "com.google.firebase.messa
 fun RemoteMessage.notify(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int) {
     val notification = this.toNotification(context, defaultTitle, defaultNotificationResource)
     val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    val id = this.notification.tag?.hashCode() ?: UUID.randomUUID().toString().hashCode()
+    val id = this.notification?.tag?.hashCode() ?: UUID.randomUUID().toString().hashCode()
     manager.notify(id, notification)
 }
 
@@ -34,15 +34,15 @@ fun RemoteMessage.notify(context: Context, defaultTitle: String, @DrawableRes de
  */
 fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int): Notification {
     var soundUri: Uri? = null
-    if (notification.sound != null) {
-        if (notification.sound == "default") {
+    if (notification?.sound != null) {
+        if (notification?.sound == "default") {
             soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         } else {
-            val sound = Uri.parse("android.resource://${context.packageName}/raw/${notification.sound}")
+            val sound = Uri.parse("android.resource://${context.packageName}/raw/${notification?.sound}")
             soundUri = sound
         }
     }
-    val icon = notification.icon
+    val icon = notification?.icon
 
     var resourceId: Int? = null
     if (icon != null) {
@@ -52,10 +52,10 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
         }
     }
     var color: Int? = null
-    if (notification.color != null) {
-        color = Color.parseColor(notification.color)
+    if (notification?.color != null) {
+        color = Color.parseColor(notification?.color)
     }
-    val title = notification.title ?: defaultTitle
+    val title = notification?.title ?: defaultTitle
     val bundle = Util.getBundle(this)
     val applicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
     //found default channel id via experimentation
@@ -75,7 +75,7 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
     }
     builder
             .setContentTitle(title)
-            .setContentText(notification.body)
+            .setContentText(notification?.body)
             .setAutoCancel(true)
     if (resourceId != null) {
         builder.setSmallIcon(resourceId)
