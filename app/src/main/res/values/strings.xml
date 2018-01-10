@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Notifire Sample</string>
-    <string name="channel_id_default">Test</string>
+    <string name="default_notification_channel_id">test</string>
 </resources>

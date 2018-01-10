@@ -17,7 +17,7 @@ import java.util.*
 
 
 private const val KEY_NOTIFICATION_CHANNEL = "gcm.notification.android_channel_id"
-private const val KEY_MANIFEST_NOTIFICATION_CHANNEL = "com.google.firebase.messaging.default_notification_channel"
+private const val KEY_MANIFEST_NOTIFICATION_CHANNEL = "com.google.firebase.messaging.default_notification_channel_id"
 
 /**
  * Posts the [RemoteMessage] as a system notification.

@@ -17,7 +17,7 @@ object NotificationStuff {
 
             val channelName = "Test"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val notificationChannel = NotificationChannel(context.getString(R.string.channel_id_default), channelName, importance)
+            val notificationChannel = NotificationChannel(context.getString(R.string.default_notification_channel_id), channelName, importance)
             notificationChannel.description = "For testing things"
             notificationManager.createNotificationChannel(notificationChannel)
         }
