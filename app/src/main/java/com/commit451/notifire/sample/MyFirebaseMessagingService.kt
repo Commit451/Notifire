@@ -8,10 +8,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-
-        if (remoteMessage != null) {
-            remoteMessage.data
-            remoteMessage.notify(applicationContext, getString(R.string.app_name), R.mipmap.ic_launcher)
-        }
+        remoteMessage?.notify(applicationContext, getString(R.string.app_name), R.mipmap.ic_launcher)
     }
 }
