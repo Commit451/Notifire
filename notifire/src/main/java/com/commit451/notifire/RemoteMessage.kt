@@ -1,4 +1,5 @@
 @file:JvmName("Notifire")
+
 package com.commit451.notifire
 
 import android.app.Notification
@@ -11,6 +12,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.support.annotation.DrawableRes
+import android.support.v4.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.Util
 import java.util.*
@@ -33,6 +35,13 @@ fun RemoteMessage.notify(context: Context, defaultTitle: String, @DrawableRes de
  * Transforms the [RemoteMessage] to a [Notification] for you to post yourself or modify as needed
  */
 fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int): Notification {
+    return toNotificationBuilder(context, defaultTitle, defaultNotificationResource).build()
+}
+
+/**
+ * Transforms the [RemoteMessage] to a [Notification.Builder] for you to post yourself or modify as needed
+ */
+fun RemoteMessage.toNotificationBuilder(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int): NotificationCompat.Builder {
     var soundUri: Uri? = null
     if (notification?.sound != null) {
         if (notification?.sound == "default") {
@@ -66,13 +75,8 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
         channelId = applicationInfo.metaData.getString(KEY_MANIFEST_NOTIFICATION_CHANNEL)
     }
 
-    val builder: Notification.Builder
+    val builder = NotificationCompat.Builder(context, channelId)
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        builder = Notification.Builder(context, channelId)
-    } else {
-        builder = Notification.Builder(context)
-    }
     builder
             .setContentTitle(title)
             .setContentText(notification?.body)
@@ -95,5 +99,7 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
     }
     val resultPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     builder.setContentIntent(resultPendingIntent)
-    return builder.build()
+    return builder
 }
+
+

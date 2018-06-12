@@ -35,6 +35,7 @@ See [the docs](https://firebase.google.com/docs/cloud-messaging/http-server-ref)
 
 ## Limitations
 - If you set an invalid sound on your notification payload, in the background, Firebase will play the default sound if the raw resource is not found, but when the message is posted in the foreground with Notifire, it will play no sound if the raw resource is not found. This is an uncommon case since you should only send valid resource names in the payload, but something worth noting.
+- This library uses a package private variable `zzdp` within `RemoteMessage`, and has been tested with Firebase Messaging 17.0.0. If you are on a different version than 17.0.0, this library may not work as expected. Use caution when upgrading or downgrading.
 
 ## Contributing
 To build this project with the sample, you will need to create your own Firebase project with the same package name as the sample: `com.commit451.notifire.sample` and paste the `google-services.json` into the `app` folder. The sample should then build properly.

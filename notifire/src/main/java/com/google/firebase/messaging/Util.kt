@@ -7,5 +7,5 @@ import android.os.Bundle
  */
 object Util {
 
-    fun getBundle(remoteMessage: RemoteMessage): Bundle? = remoteMessage.mBundle
+    fun getBundle(remoteMessage: RemoteMessage): Bundle? = remoteMessage.zzdp
 }
