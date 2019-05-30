@@ -43,7 +43,7 @@ To build this project with the sample, you will need to create your own Firebase
 License
 --------
 
-    Copyright 2017 Commit 451
+    Copyright 2019 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

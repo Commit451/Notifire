@@ -11,10 +11,10 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.support.annotation.DrawableRes
-import android.support.v4.app.NotificationCompat
+import android.os.Bundle
+import androidx.annotation.DrawableRes
+import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
-import com.google.firebase.messaging.Util
 import java.util.*
 
 
@@ -44,11 +44,11 @@ fun RemoteMessage.toNotification(context: Context, defaultTitle: String, @Drawab
 fun RemoteMessage.toNotificationBuilder(context: Context, defaultTitle: String, @DrawableRes defaultNotificationResource: Int): NotificationCompat.Builder {
     var soundUri: Uri? = null
     if (notification?.sound != null) {
-        if (notification?.sound == "default") {
-            soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        soundUri = if (notification?.sound == "default") {
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         } else {
             val sound = Uri.parse("android.resource://${context.packageName}/raw/${notification?.sound}")
-            soundUri = sound
+            sound
         }
     }
     val icon = notification?.icon
@@ -65,7 +65,7 @@ fun RemoteMessage.toNotificationBuilder(context: Context, defaultTitle: String, 
         color = Color.parseColor(notification?.color)
     }
     val title = notification?.title ?: defaultTitle
-    val bundle = Util.getBundle(this)
+    val bundle = getBundle(this)
     val applicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
     //found default channel id via experimentation
     var channelId = "fcm_fallback_notification_channel"
@@ -95,11 +95,13 @@ fun RemoteMessage.toNotificationBuilder(context: Context, defaultTitle: String, 
 
     val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
     for (key in this.data.keys) {
-        intent.putExtra(key, this.data[key])
+        intent?.putExtra(key, this.data[key])
     }
     val resultPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     builder.setContentIntent(resultPendingIntent)
     return builder
 }
+
+private fun getBundle(remoteMessage: RemoteMessage): Bundle? = remoteMessage.toIntent().extras
 
 
